@@ -1,119 +1,424 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Sistema de Presença - Merenda Escolar</title>
-
-<style>
-body{
-    font-family: Arial;
-    background:#f0f4f8;
-    text-align:center;
-    padding:20px;
-}
-
-.box{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-    max-width:500px;
-    margin:auto;
-}
-
-input{
-    padding:8px;
-    margin:5px;
-    width:80%;
-}
-
-button{
-    padding:10px 20px;
-    margin:5px;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    font-size:15px;
-    background:#4CAF50;
-    color:white;
-}
-
-h2{color:#333;}
-</style>
-</head>
-
-<body>
-
-<div class="box">
-
-<h2>Confirmação de Presença na Merenda</h2>
-
-<input type="text" id="nome" placeholder="Seu nome"><br>
-<input type="text" id="turma" placeholder="Sua turma"><br><br>
-
-<p>Você vai almoçar hoje?</p>
-
-<select id="presenca">
-<option value="Sim">Sim</option>
-<option value="Não">Não</option>
-</select>
-
-<h2>Avaliação da Merenda</h2>
-
-<p>Nota de 1 a 5:</p>
-<input type="number" id="nota" min="1" max="5"><br><br>
-
-<button onclick="salvar()">Salvar Dados</button>
-
-<p id="msg"></p>
-
-</div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAwqk8_a16xWeCDqYG2U6p-L9GK2XJidoI",
-  authDomain: "merenda-escolar-b08f5.firebaseapp.com",
-  projectId: "merenda-escolar-b08f5",
-  storageBucket: "merenda-escolar-b08f5.firebasestorage.app",
-  messagingSenderId: "570069478339",
-  appId: "1:570069478339:web:63d433f8ef8611f94f6b76"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.salvar = async function(){
-
-    let n = document.getElementById("nome").value
-    let t = document.getElementById("turma").value
-    let p = document.getElementById("presenca").value
-    let nt = document.getElementById("nota").value
-
-    if(n=="" || t=="" || nt==""){
-        document.getElementById("msg").innerHTML = "Preencha todos os campos!"
-        return
-    }
-
-    await addDoc(collection(db, "respostas"), {
-        nome: n,
-        turma: t,
-        presenca: p,
-        nota: Number(nt),
-        data: new Date()
-    });
-
-    document.getElementById("msg").innerHTML = "Dados salvos com sucesso!"
-
-    document.getElementById("nome").value=""
-    document.getElementById("turma").value=""
-    document.getElementById("nota").value=""
-}
-
-</script>
-
-</body>
-</html>
+diff --git a/index.html b/index.html
+index a2a5672a0275813b070aa59ab10bd8af7185e807..6a17781aea3f8c85a0d83d3e79cfcf945321c109 100644
+--- a/index.html
++++ b/index.html
+@@ -1,119 +1,299 @@
+-<!DOCTYPE html>
+-<html lang="pt-BR">
+-<head>
+-<meta charset="UTF-8">
+-<title>Sistema de Presença - Merenda Escolar</title>
+-
+-<style>
+-body{
+-    font-family: Arial;
+-    background:#f0f4f8;
+-    text-align:center;
+-    padding:20px;
+-}
+-
+-.box{
+-    background:white;
+-    padding:20px;
+-    border-radius:10px;
+-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+-    max-width:500px;
+-    margin:auto;
+-}
+-
+-input{
+-    padding:8px;
+-    margin:5px;
+-    width:80%;
+-}
+-
+-button{
+-    padding:10px 20px;
+-    margin:5px;
+-    border:none;
+-    border-radius:5px;
+-    cursor:pointer;
+-    font-size:15px;
+-    background:#4CAF50;
+-    color:white;
+-}
+-
+-h2{color:#333;}
+-</style>
+-</head>
+-
+-<body>
+-
+-<div class="box">
+-
+-<h2>Confirmação de Presença na Merenda</h2>
+-
+-<input type="text" id="nome" placeholder="Seu nome"><br>
+-<input type="text" id="turma" placeholder="Sua turma"><br><br>
+-
+-<p>Você vai almoçar hoje?</p>
+-
+-<select id="presenca">
+-<option value="Sim">Sim</option>
+-<option value="Não">Não</option>
+-</select>
+-
+-<h2>Avaliação da Merenda</h2>
+-
+-<p>Nota de 1 a 5:</p>
+-<input type="number" id="nota" min="1" max="5"><br><br>
+-
+-<button onclick="salvar()">Salvar Dados</button>
+-
+-<p id="msg"></p>
+-
+-</div>
+-
+-<script type="module">
+-
+-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+-import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+-
+-const firebaseConfig = {
+-  apiKey: "AIzaSyAwqk8_a16xWeCDqYG2U6p-L9GK2XJidoI",
+-  authDomain: "merenda-escolar-b08f5.firebaseapp.com",
+-  projectId: "merenda-escolar-b08f5",
+-  storageBucket: "merenda-escolar-b08f5.firebasestorage.app",
+-  messagingSenderId: "570069478339",
+-  appId: "1:570069478339:web:63d433f8ef8611f94f6b76"
+-};
+-
+-const app = initializeApp(firebaseConfig);
+-const db = getFirestore(app);
+-
+-window.salvar = async function(){
+-
+-    let n = document.getElementById("nome").value
+-    let t = document.getElementById("turma").value
+-    let p = document.getElementById("presenca").value
+-    let nt = document.getElementById("nota").value
+-
+-    if(n=="" || t=="" || nt==""){
+-        document.getElementById("msg").innerHTML = "Preencha todos os campos!"
+-        return
+-    }
+-
+-    await addDoc(collection(db, "respostas"), {
+-        nome: n,
+-        turma: t,
+-        presenca: p,
+-        nota: Number(nt),
+-        data: new Date()
+-    });
+-
+-    document.getElementById("msg").innerHTML = "Dados salvos com sucesso!"
+-
+-    document.getElementById("nome").value=""
+-    document.getElementById("turma").value=""
+-    document.getElementById("nota").value=""
+-}
+-
+-</script>
+-
+-</body>
+-</html>
+\ No newline at end of file
++<!DOCTYPE html>
++<html lang="pt-BR">
++<head>
++<meta charset="UTF-8">
++<meta name="viewport" content="width=device-width, initial-scale=1.0">
++<title>Sistema de Presença - Merenda Escolar</title>
++
++<style>
++:root{
++    --azul-escuro:#1f3a5f;
++    --azul:#2c5e92;
++    --verde:#4caf50;
++    --verde-escuro:#3d8f41;
++    --cinza:#f0f4f8;
++    --branco:#ffffff;
++    --erro:#d62828;
++}
++
++*{box-sizing:border-box;}
++
++body{
++    margin:0;
++    font-family:Arial, sans-serif;
++    background:var(--cinza);
++    color:#1b1b1b;
++}
++
++.topo{
++    background:linear-gradient(90deg, var(--azul-escuro), var(--azul));
++    color:var(--branco);
++    padding:14px 22px;
++    display:flex;
++    justify-content:space-between;
++    align-items:center;
++    flex-wrap:wrap;
++    gap:10px;
++}
++
++.logo{
++    font-size:18px;
++    font-weight:bold;
++}
++
++.menu{
++    display:flex;
++    gap:14px;
++    font-size:14px;
++}
++
++.menu a{
++    color:var(--branco);
++    text-decoration:none;
++    padding:6px 10px;
++    border-radius:5px;
++}
++
++.menu a:hover{
++    background:rgba(255,255,255,0.15);
++}
++
++main{
++    padding:28px 16px;
++}
++
++.box{
++    background:var(--branco);
++    padding:24px;
++    border-radius:12px;
++    box-shadow:0 8px 20px rgba(0,0,0,0.08);
++    max-width:620px;
++    margin:auto;
++    text-align:left;
++}
++
++h2{
++    margin-top:0;
++    color:#223;
++}
++
++label{
++    display:block;
++    font-weight:bold;
++    margin:10px 0 6px;
++}
++
++input, select{
++    width:100%;
++    padding:10px;
++    border:1px solid #c8d2de;
++    border-radius:8px;
++    margin-bottom:8px;
++}
++
++small{
++    display:block;
++    color:#5c6773;
++    margin-bottom:8px;
++}
++
++button{
++    padding:10px 16px;
++    margin-top:8px;
++    border:none;
++    border-radius:8px;
++    cursor:pointer;
++    font-size:15px;
++    background:var(--verde);
++    color:var(--branco);
++    font-weight:bold;
++}
++
++button:hover{
++    background:var(--verde-escuro);
++}
++
++button.secundario{
++    background:var(--azul);
++}
++
++button.secundario:hover{
++    background:var(--azul-escuro);
++}
++
++.avaliacao{
++    margin-top:24px;
++    padding-top:16px;
++    border-top:1px solid #dde4ed;
++    display:none;
++}
++
++.msg{
++    margin-top:14px;
++    font-weight:bold;
++}
++
++.msg.erro{color:var(--erro);}
++.msg.ok{color:var(--verde-escuro);}
++
++@media (max-width:600px){
++    .topo{justify-content:center;}
++    .menu{justify-content:center; flex-wrap:wrap;}
++}
++</style>
++</head>
++
++<body>
++
++<header class="topo">
++    <div class="logo">🍽️ Merenda Escolar</div>
++    <nav class="menu" aria-label="Menu superior">
++        <a href="#presenca-section">Presença</a>
++        <a href="#avaliacao-section">Avaliação</a>
++        <a href="#status">Status</a>
++    </nav>
++</header>
++
++<main>
++<div class="box">
++
++<h2 id="presenca-section">Confirmação de Presença</h2>
++
++<label for="nome">Nome</label>
++<input type="text" id="nome" placeholder="Seu nome" minlength="3" required>
++<small>Mínimo de 3 caracteres.</small>
++
++<label for="turma">Turma</label>
++<input type="text" id="turma" placeholder="Sua turma" minlength="2" required>
++<small>Mínimo de 2 caracteres.</small>
++
++<label for="presenca">Você vai almoçar hoje?</label>
++<select id="presenca">
++<option value="Sim">Sim</option>
++<option value="Não">Não</option>
++</select>
++
++<button class="secundario" onclick="confirmarPresenca()">Confirmar Presença</button>
++
++<section class="avaliacao" id="avaliacao-section">
++    <h2>Avaliação da Merenda</h2>
++
++    <label for="nota">Nota de 1 a 5</label>
++    <input type="number" id="nota" min="1" max="5" required>
++
++    <label for="comentario">Comentário</label>
++    <input type="text" id="comentario" placeholder="Conte como foi a merenda" minlength="10" required>
++    <small>Mínimo de 10 caracteres no comentário.</small>
++
++    <button onclick="salvar()">Salvar Dados</button>
++</section>
++
++<p class="msg" id="status"></p>
++
++</div>
++</main>
++
++<script type="module">
++
++import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
++import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
++
++const firebaseConfig = {
++  apiKey: "AIzaSyAwqk8_a16xWeCDqYG2U6p-L9GK2XJidoI",
++  authDomain: "merenda-escolar-b08f5.firebaseapp.com",
++  projectId: "merenda-escolar-b08f5",
++  storageBucket: "merenda-escolar-b08f5.firebasestorage.app",
++  messagingSenderId: "570069478339",
++  appId: "1:570069478339:web:63d433f8ef8611f94f6b76"
++};
++
++const app = initializeApp(firebaseConfig);
++const db = getFirestore(app);
++const avaliacaoSection = document.getElementById("avaliacao-section");
++const status = document.getElementById("status");
++let presencaConfirmada = false;
++
++function mostrarMensagem(texto, tipo = "ok") {
++    status.textContent = texto;
++    status.className = `msg ${tipo}`;
++}
++
++window.confirmarPresenca = function(){
++    const n = document.getElementById("nome").value.trim();
++    const t = document.getElementById("turma").value.trim();
++    const p = document.getElementById("presenca").value;
++
++    if(n.length < 3){
++        mostrarMensagem("O nome deve ter no mínimo 3 caracteres.", "erro");
++        return;
++    }
++
++    if(t.length < 2){
++        mostrarMensagem("A turma deve ter no mínimo 2 caracteres.", "erro");
++        return;
++    }
++
++    presencaConfirmada = true;
++
++    if(p === "Sim"){
++        avaliacaoSection.style.display = "block";
++        mostrarMensagem("Presença confirmada! Agora avalie a merenda.");
++    } else {
++        avaliacaoSection.style.display = "none";
++        mostrarMensagem("Presença registrada como 'Não'. Clique em Salvar Dados para finalizar.");
++    }
++};
++
++window.salvar = async function(){
++    const n = document.getElementById("nome").value.trim();
++    const t = document.getElementById("turma").value.trim();
++    const p = document.getElementById("presenca").value;
++    const nota = document.getElementById("nota").value;
++    const comentario = document.getElementById("comentario").value.trim();
++
++    if(!presencaConfirmada){
++        mostrarMensagem("Primeiro confirme a presença.", "erro");
++        return;
++    }
++
++    if(n.length < 3 || t.length < 2){
++        mostrarMensagem("Revise nome e turma com o tamanho mínimo exigido.", "erro");
++        return;
++    }
++
++    if(p === "Sim"){
++        if(nota === ""){
++            mostrarMensagem("Informe a nota da merenda.", "erro");
++            return;
++        }
++
++        if(comentario.length < 10){
++            mostrarMensagem("O comentário deve ter no mínimo 10 caracteres.", "erro");
++            return;
++        }
++    }
++
++    await addDoc(collection(db, "respostas"), {
++        nome: n,
++        turma: t,
++        presenca: p,
++        nota: p === "Sim" ? Number(nota) : null,
++        comentario: p === "Sim" ? comentario : "Não se aplica",
++        data: new Date()
++    });
++
++    mostrarMensagem("Dados salvos com sucesso!");
++
++    document.getElementById("nome").value = "";
++    document.getElementById("turma").value = "";
++    document.getElementById("presenca").value = "Sim";
++    document.getElementById("nota").value = "";
++    document.getElementById("comentario").value = "";
++    avaliacaoSection.style.display = "none";
++    presencaConfirmada = false;
++}
++
++</script>
++
++</body>
++</html>
