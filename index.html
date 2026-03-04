@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Sistema de Presença - Merenda Escolar</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f0f4f8;
+    text-align:center;
+    padding:20px;
+}
+
+.box{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    max-width:500px;
+    margin:auto;
+}
+
+input{
+    padding:8px;
+    margin:5px;
+    width:80%;
+}
+
+button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:15px;
+    background:#4CAF50;
+    color:white;
+}
+
+h2{color:#333;}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Confirmação de Presença na Merenda</h2>
+
+<input type="text" id="nome" placeholder="Seu nome"><br>
+<input type="text" id="turma" placeholder="Sua turma"><br><br>
+
+<p>Você vai almoçar hoje?</p>
+
+<select id="presenca">
+<option value="Sim">Sim</option>
+<option value="Não">Não</option>
+</select>
+
+<h2>Avaliação da Merenda</h2>
+
+<p>Nota de 1 a 5:</p>
+<input type="number" id="nota" min="1" max="5"><br><br>
+
+<button onclick="salvar()">Salvar Dados</button>
+
+<p id="msg"></p>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAwqk8_a16xWeCDqYG2U6p-L9GK2XJidoI",
+  authDomain: "merenda-escolar-b08f5.firebaseapp.com",
+  projectId: "merenda-escolar-b08f5",
+  storageBucket: "merenda-escolar-b08f5.firebasestorage.app",
+  messagingSenderId: "570069478339",
+  appId: "1:570069478339:web:63d433f8ef8611f94f6b76"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.salvar = async function(){
+
+    let n = document.getElementById("nome").value
+    let t = document.getElementById("turma").value
+    let p = document.getElementById("presenca").value
+    let nt = document.getElementById("nota").value
+
+    if(n=="" || t=="" || nt==""){
+        document.getElementById("msg").innerHTML = "Preencha todos os campos!"
+        return
+    }
+
+    await addDoc(collection(db, "respostas"), {
+        nome: n,
+        turma: t,
+        presenca: p,
+        nota: Number(nt),
+        data: new Date()
+    });
+
+    document.getElementById("msg").innerHTML = "Dados salvos com sucesso!"
+
+    document.getElementById("nome").value=""
+    document.getElementById("turma").value=""
+    document.getElementById("nota").value=""
+}
+
+</script>
+
+</body>
+</html>
